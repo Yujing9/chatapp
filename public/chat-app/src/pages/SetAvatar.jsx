@@ -28,26 +28,28 @@ export default function SetAvatar(){
         }
       }, []);
     const setProfilePicture = async() =>{
-        if(selectedAvatar===undefined){
+        if(selectedAvatar === undefined){
             toast.error("Please select an avatar", toastOptions);
         }else{
             const user = await JSON.parse(localStorage.getItem("chat-app-user"));
             const {data} = await axios.post(`${setAvatarRoute}/${user._id}`,{
             image:avatars[selectedAvatar],
         });
-        if (data.isSet){
-            user.isAvatarImageSet = true;
-            user.avatarImage = data.image;
-            localStorage.setItem(
-                process.env.REACT_APP_LOCALHOST_KEY,
-                JSON.stringify(user)
-            );
-            navigate("/");
-        }else{
-            toast.error("Error setting avatar. Please try again.", toastOptions)
-        }
-    }
-    };
+          if (data.isSet){
+              user.isAvatarImageSet = true;
+              user.avatarImage = data.image;
+              localStorage.setItem(
+                  "chat-app-user",
+                  JSON.stringify(user)
+              );
+              console.log("Successfully for setAvatar");
+              navigate("/");
+          }else{
+              toast.error("Error setting avatar. Please try again.", toastOptions)
+          }
+      }
+  }
+    
 
 
     useEffect(() => {

@@ -67,6 +67,7 @@ module.exports.getAllUsers = async(req,res,next)=>{
             "avatarImage",
             "_id",
         ])
+        return res.json(users);
     }catch(ex){
         next(ex);
     }

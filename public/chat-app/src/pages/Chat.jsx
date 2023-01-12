@@ -5,17 +5,18 @@ import { useNavigate , Link } from 'react-router-dom';
 import {allUsersRoute} from "../utils/APIRoutes"
 import Contacts from '../components/Contacts';
 
-function Chat() {
-    const [contacts,setContacts] = useState();
-    const [currentUser,setCurrentUser] = useState(undefined);
+export default function Chat() {
+    const [contacts,setContacts] = useState([]);
+    const [currentUser, setCurrentUser] = useState(undefined);
+    const [currentChat,setCurrentChat] = useState(undefined);
     const navigate = useNavigate();
-    const [currentChat.setCurrentChat] = useState(undefined);
+    
     useEffect(()=>{
       async function fetchData(){
-        if(localStorage.getItem("chat-app-user")){
-          navigate("/");
+        if(!localStorage.getItem("chat-app-user")){
+          navigate("/login");
         }else{
-          setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")))
+          setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
         }  
     }
     fetchData();
@@ -25,7 +26,9 @@ function Chat() {
     useEffect(()=>{
       async function fetchData(){
         if (currentUser){
+          console.log("new");
           if(currentUser.isAvatarImageSet){
+            console.log(currentUser._id);
             const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
             setContacts(data.data);
           }
@@ -34,14 +37,17 @@ function Chat() {
         }
     }
     fetchData();
-    },[])
+    },[currentUser])
+
+
     const handleChatChange = (chat)=>{
-      setCurrentChat(Chat);
+      setCurrentChat(chat);
     }
     return (
         <Container>
             <div className='container'>
-                <Contacts contacts={contacts} currentUser={currentUser} changeChat = {handleChatChange} />
+              <h1> Hello chat</h1>
+                {/* <Contacts contacts={contacts} currentUser={currentUser} changeChat = {handleChatChange} /> */}
             </div>
         </Container>
     );
@@ -67,4 +73,3 @@ const Container = styled.div`
     }
   }
 `;
-export default Chat;
